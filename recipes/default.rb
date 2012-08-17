@@ -23,7 +23,7 @@ ruby_block "edit resolv conf" do
   if node[:resolv][:domain]
     block do
       rc = Chef::Util::FileEdit.new("/etc/resolv.conf")
-      rc.search_file_replace_line(/^search/, "search #{node[:resolv][:domain]} #{node[:resolv][:domain].dup.split(".").last(2).join('.') if node[:resolv][:domain].dup.split(".").count>2}")
+      rc.search_file_replace_line(/^search/, "search #{node[:resolv][:domain]} #{node[:resolv][:domain].dup.split(".").last(2).join('.') if node[:resolv][:domain].dup.split(".").count>2 && node[:resolv][:search_additional_domain]}")
       rc.search_file_replace_line(/^domain/, "domain #{node[:resolv][:domain]}")
       rc.search_file_replace_line(/^options/, "options rotate timeout:#{node[:resolv][:timeout]} attempts:#{node[:resolv][:attempts]}")
       rc.write_file
